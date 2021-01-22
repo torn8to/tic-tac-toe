@@ -8,16 +8,30 @@ class TicTacToeBoard:
         self.board = np.zeros((3,3), np.uint8)
         self.player1marker = 1
         self.player2marker = 2
-        self.againstComputer:bool = againstComputer
-        self.player_is_first:bool = False
+        self.against_computer:bool = againstComputer
+        self.player_is_first:bool = True
 
-    def resetBoard(self, bool):
+    def resetBoard(self):
         self.board = np.zeros((3,3), np.uint8)
 
 
     '''
     checks either player conforms to a win condition
     '''
+    '''
+    Methods for enabling and disabling playing against an AI  opponent
+    implemented for futur reference
+    '''
+    def enable_ai(self):
+        self.againstComputer = True;
+
+
+    def disable_ai(self):
+        self.against_computer = False;
+    '''
+    checks and returns whisch player marker has achieved a win condition
+    '''
+
 
     def check_for_win(self):
         for x in self.board:
@@ -38,9 +52,16 @@ class TicTacToeBoard:
             return self.player2Marker
         return 3
 
+    '''
+    returns true if there is a winner
+    '''
     def is_winner(self):
         check = check_for_win()
         return check == self.player1Marker and check == self.player2marker
+
+    '''
+    returns true or flase on whether or no the placement entered has already been filled
+    '''
 
     def coordinate_overlap(self, coordinateX, coordinateY):
         comp = self.board[coordinateY][coordinateX]
@@ -56,6 +77,7 @@ class TicTacToeBoard:
             playerMarker = self.player2marker
 
         self.board[coordinateY][coordinateX] = playerMarker
+
 
     def printBoard(self):
         print(self.board)
@@ -108,7 +130,7 @@ end of TicTacToeBoard class
 
 
 
-def interact(event,x,y,flsgs,param):
+def interact(event,x,y,flags,param):
     '''variables for figuring out which location the box is interacting   '''
     top_bound = 80
     left_bound = 80
@@ -144,19 +166,28 @@ End of interact function
 '''
 
 '''
+global variables
+'''
+tic_tac_toe_board = TicTacToeBoard(False) # ai starts off as disabled
+running = True;
+bar_color = (168,14,12) # bgr values for the tic tac toe board
+
+'''
 this function ismeant to switch the value of a boolean so that it is usable
 '''
-def switch(var):
-    if isinstance(var, boolean):
-        var = not var;
-        return var;
+def switch(*args):
+    running = not running
+
+'''
+function that enables the gui to reset the board
+'''
+def reset_the_board():
+    tic_tac_toe_board.resetBoard()
+
+
 
 
 if __name__ == '__main__':
-    ''' instantiating the tic tac toe board'''
-    tic_tac_toe_board = TicTacToeBoard(False)
-
-
     '''variables for drawing tic tac _toe board'''
     top_bound = 80
     left_bound= 80
@@ -189,24 +220,21 @@ if __name__ == '__main__':
     img = np.full((512,512,3),255,np.uint8)
 
 
-    ''' The boolean for whethter or not the program is running'''
-    running = True;
 
-    ''' creating the interactable buttons'''
-    cv.createButton("Reset Board",tic_tac_toe_board.resetBoard(True))# resets the board
-    cv.createButton("Exit Game", switch(running)) # when this button is hit it breaks the for loop
     cv.namedWindow('image')
+    cv.createButton("Exit Game", switch,None,cv.QT_PUSH_BUTTON,1) # when this button is hit it breaks the for loop
+    cv.createButton("Reset Board",reset_the_board,None,cv.QT_PUSH_BUTTON,0) # resets the board
     cv.setMouseCallback('image', interact)
 
     '''drawing the bars of the the tic-tac-toe gameBoard'''
     # drawing the left vertical bar
-    cv.rectangle(img,(left_vert_init_x,left_vert_init_y),(left_vert_final_x,left_vert_final_y),Barcolor,-1)
+    cv.rectangle(img,(left_vert_init_x,left_vert_init_y),(left_vert_final_x,left_vert_final_y),bar_color,-1)
     # drawing the right vertical bar
-    cv.rectangle(img,(right_vert_init_x,right_vert_init_y),(right_vert_final_x,right_vert_final_y), Barcolor, -1)
+    cv.rectangle(img,(right_vert_init_x,right_vert_init_y),(right_vert_final_x,right_vert_final_y), bar_color, -1)
     # drawing the top horizontal bar
-    cv.rectangle(img,(top_hor_init_x,top_hor_init_y),(top_hor_final_x,top_hor_final_y), Barcolor, -1)
+    cv.rectangle(img,(top_hor_init_x,top_hor_init_y),(top_hor_final_x,top_hor_final_y), bar_color, -1)
     # drawing the bottom horizontal bar
-    cv.rectangle(img,(bottom_hor_init_x,bottom_hor_init_y),(bottom_hor_final_x,bottom_hor_final_y),Barcolor, -1)
+    cv.rectangle(img,(bottom_hor_init_x,bottom_hor_init_y),(bottom_hor_final_x,bottom_hor_final_y),bar_color, -1)
 
 
     while running:
