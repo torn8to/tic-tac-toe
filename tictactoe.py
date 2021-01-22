@@ -135,7 +135,7 @@ def interact(event,x,y,flsgs,param):
                 yy=j
                 in_region = True
     if in_region:
-        print("("xx + "," + yy")")
+        print("("+xx + "," + yy+")")
     else:
         print(in_region)
 
@@ -148,7 +148,7 @@ this function ismeant to switch the value of a boolean so that it is usable
 '''
 def switch(var):
     if isinstance(var, boolean):
-        var = !var;
+        var = not var;
         return var;
 
 
@@ -192,13 +192,14 @@ if __name__ == '__main__':
     ''' The boolean for whethter or not the program is running'''
     running = True;
 
-    ''' creating the interactable buttons''''
+    ''' creating the interactable buttons'''
     cv.createButton("Reset Board",tic_tac_toe_board.resetBoard(True))# resets the board
     cv.createButton("Exit Game", switch(running)) # when this button is hit it breaks the for loop
     cv.namedWindow('image')
     cv.setMouseCallback('image', interact)
 
-    #drawing the bars
+    '''drawing the bars of the the tic-tac-toe gameBoard'''
+    # drawing the left vertical bar
     cv.rectangle(img,(left_vert_init_x,left_vert_init_y),(left_vert_final_x,left_vert_final_y),Barcolor,-1)
     # drawing the right vertical bar
     cv.rectangle(img,(right_vert_init_x,right_vert_init_y),(right_vert_final_x,right_vert_final_y), Barcolor, -1)
@@ -211,7 +212,7 @@ if __name__ == '__main__':
     while running:
         cv.imshow('image',img)
         k = cv.waitKey(20) & 0xFF
-        if k = 27:
+        if k == 27:
             break
 
 
