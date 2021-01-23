@@ -130,40 +130,7 @@ end of TicTacToeBoard class
 
 
 
-def interact(event,x,y,flags,param):
-    '''variables for figuring out which location the box is interacting   '''
-    top_bound = 80
-    left_bound = 80
-    bar_length = 330
-    bar_width = 15
-    tic_tac_Dimension:np.uint16 = (bar_length - bar_width*2)/3
-    xx,yy = -1,-1
-    in_region = False
-    if event == cv.EVENT_LBUTTONDOWN:
 
-        if x >= leftBound and x < leftBound +tic_tac_Dimension:
-            xx=0
-            in_region = True
-        if y >= top_bound and x < top_bound + tic_tac_Dimension:
-            yy = 0
-            in_region = True
-
-        for i in range(1,3):
-            if (x>= left_bound+ tictacDimension * i + bar_width*i-1 and x<= left_bound+ tictacDimension * 2*i + bar_width*i-1 ):
-                xx=i
-                in_region= True
-        for j in range(1,3):
-            if (y>= left_bound+ tictacDimension * i + bar_width*i-1 and y<= left_bound+ tictacDimension * 2*i + bar_width*i-1 ):
-                yy=j
-                in_region = True
-    if in_region:
-        print("("+xx + "," + yy+")")
-    else:
-        print(in_region)
-
-'''
-End of interact function
-'''
 
 '''
 global variables
@@ -171,6 +138,50 @@ global variables
 tic_tac_toe_board = TicTacToeBoard(False) # ai starts off as disabled
 running = True;
 bar_color = (168,14,12) # bgr values for the tic tac toe board
+'''variables for drawing tic tac _toe board'''
+top_bound = 80
+left_bound= 80
+bar_length = 330
+bar_width = 15
+tic_tac_Dimension = int((bar_length - bar_width*2)/3)
+
+'''
+a function for interpereting the mouse inpyuts to get the right locations
+'''
+
+def interact(event,x,y,flags,param):
+    '''variables for figuring out which location the box is interacting   '''
+    xx,yy = -1,-1
+    in_region = False
+    if event == cv.EVENT_LBUTTONDOWN:
+
+        '''
+        if x >= left_bound and x < left_bound +tic_tac_dimension:
+            xx=0
+            in_region = True
+        if y >= top_bound and x < top_bound + tic_tac_dimension:
+            yy = 0
+            in_region = True
+
+        for i in range(1,3):
+            if (x>= left_bound+ tic_tac_dimension * i + bar_width*i-1 and x<= left_bound+ tic_tac_dimension * 2*i + bar_width*i-1 ):
+                xx=i
+                in_region= True
+        for j in range(1,3):
+            if (y>= left_bound+ tic_tac_dimension * i + bar_width*i-1 and y<= left_bound+ tic_tac_dimension * 2*i + bar_width*i-1 ):
+                yy=j
+                in_region = True
+
+    if in_region:
+        print("("+xx + "," + yy+")")
+    else:
+        print(in_region + event)
+    '''
+    pass
+
+'''
+End of interact function
+'''
 
 '''
 this function ismeant to switch the value of a boolean so that it is usable
@@ -181,20 +192,13 @@ def switch(*args):
 '''
 function that enables the gui to reset the board
 '''
-def reset_the_board():
+def reset_the_board(*args):
     tic_tac_toe_board.resetBoard()
-
+    print("the succ")
 
 
 
 if __name__ == '__main__':
-    '''variables for drawing tic tac _toe board'''
-    top_bound = 80
-    left_bound= 80
-    bar_length = 330
-    bar_width = 15
-    tic_tac_Dimension = int((bar_length - bar_width*2)/3)
-
     '''start and end coordinates for the left vertical bar'''
     left_vert_init_x = int(left_bound+tic_tac_Dimension)
     left_vert_init_y = int(top_bound)
@@ -220,10 +224,9 @@ if __name__ == '__main__':
     img = np.full((512,512,3),255,np.uint8)
 
 
-
     cv.namedWindow('image')
-    cv.createButton("Exit Game", switch,None,cv.QT_PUSH_BUTTON,1) # when this button is hit it breaks the for loop
-    cv.createButton("Reset Board",reset_the_board,None,cv.QT_PUSH_BUTTON,0) # resets the board
+    cv.createButton("Exit Game", switch,'image',cv.QT_PUSH_BUTTON,1) # when this button is hit it breaks the for loop
+    cv.createButton("Reset Board",reset_the_board,'image',cv.QT_PUSH_BUTTON,0) # resets the board
     cv.setMouseCallback('image', interact)
 
     '''drawing the bars of the the tic-tac-toe gameBoard'''
@@ -242,11 +245,5 @@ if __name__ == '__main__':
         k = cv.waitKey(20) & 0xFF
         if k == 27:
             break
-
-
-
-
-
-
 
     cv.destroyAllWindows()
