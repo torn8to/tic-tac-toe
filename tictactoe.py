@@ -1,6 +1,6 @@
 import cv2 as cv
 import numpy as np
-
+import PIL as pil
 
 class TicTacToeBoard:
     def __init__(self,againstComputer:bool):
@@ -144,7 +144,9 @@ left_pad = 80
 bar_length = 330
 bar_width = 15
 tic_tac_dimension = int((bar_length - bar_width*2)/3)
-
+x_img = np.array(cv.imread('./Assets/X.png'))
+o_img = np.array(cv.imread('./Assets/O.png'))
+img = np.full((512,512,3),255,np.uint8)
 '''
 a function for interpereting the mouse inpyuts to get the right locations
 '''
@@ -161,14 +163,7 @@ def interact(event,x,y,flags,param):
             if left_pad + (i-1)*tic_tac_dimension +bar_width*(i-1) < y and y <= left_pad + (i* tic_tac_dimension)+ bar_width* (i-1):
                 yy = i
     print(str(in_region) + ":("+str(xx)+","+str(yy)+")")
-    '''
-    if in_region:
-        print("("+xx + "," + yy+")")
-    else:
-        print(in_region + event)
 
-    pass
-    '''
 
 
 
@@ -189,7 +184,7 @@ def reset_the_board(*args):
     tic_tac_toe_board.resetBoard()
     print("the succ")
 
-
+def
 
 if __name__ == '__main__':
     '''start and end coordinates for the left vertical bar'''
@@ -214,7 +209,7 @@ if __name__ == '__main__':
     bottom_hor_final_y = int( top_pad+2*tic_tac_dimension+2*bar_width)
 
     ''' creating the display image array'''
-    img = np.full((512,512,3),255,np.uint8)
+
 
 
     cv.namedWindow('image')
@@ -232,6 +227,7 @@ if __name__ == '__main__':
     # drawing the bottom horizontal bar
     cv.rectangle(img,(bottom_hor_init_x,bottom_hor_init_y),(bottom_hor_final_x,bottom_hor_final_y),bar_color, -1)
 
+    
 
     while running:
         cv.imshow('image',img)
