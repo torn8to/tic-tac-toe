@@ -15,7 +15,7 @@ class TicTacToeBoard:
     def resetBoard(self):
         self.board = np.zeros((3,3), np.uint8)
 
-    def next_turn():
+    def next_turn(self):
         self.isPlayer1 = not self.isPlayer1
 
     def get_player_1_marker(self):
@@ -87,8 +87,12 @@ class TicTacToeBoard:
             playerMarker = self.player1marker
         else:
             playerMarker = self.player2marker
+        if not self.coordinate_overlap(coordinateX,coordinateY):
+            self.board[coordinateY][coordinateX] = playerMarker
+            self.next_turn()
 
-        self.board[coordinateY][coordinateX] = playerMarker
+
+
 
     def printBoard(self):
         print(self.board)
@@ -118,7 +122,7 @@ x_img = np.array(cv.imread('./Assets/X.png'))
 o_img = np.array(cv.imread('./Assets/O.png'))
 img = np.full((512,512,3),255,np.uint8)
 '''
-a function for interpereting the mouse inpyuts to get the right locations
+a function for interpereting the mouse inputs to get the right locations
 '''
 
 def interact(event,x,y,flags,param):
@@ -157,6 +161,7 @@ function that enables the gui to reset the board
 '''
 def reset_the_board(*args):
     tic_tac_toe_board.resetBoard()
+    reset_the_viewer()
     print("the succ")
 
 '''
@@ -172,12 +177,12 @@ def place_markers():
     board = tic_tac_toe_board.get_board()
     player1 = tic_tac_toe_board.get_player_1_marker()
     player2 = tic_tac_toe_board.get_player_2_marker()
-    for i in range(0,2):
-        for j in range(0,2):
-            if board[i][j] == player1:
-                replace_section(img,x_img,left_pad + (j*(tic_tac_dimension+bar_width)), top_pad+ i*(tic_tac_dimension*bar_width))
+    for i in range(0,3):
+        for j in range(0,3):
             if board[i][j] == player2:
-                replace_section(img,o_img,left_pad + (j*(tic_tac_dimension+bar_width)), top_pad+ i*(tic_tac_dimension*bar_width))
+                replace_section(img,x_img,left_pad + (i*(tic_tac_dimension+bar_width)), top_pad+ j*(tic_tac_dimension+bar_width))
+            if board[i][j] == player1:
+                replace_section(img,o_img,left_pad + (i*(tic_tac_dimension+bar_width)), top_pad+ j*(tic_tac_dimension+bar_width))
 
 '''
 resets the viewer to the tictac toe board with a white background
