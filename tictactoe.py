@@ -140,7 +140,6 @@ def interact(event,x,y,flags,param):
                 tic_tac_toe_board.printBoard()
                 place_markers()
                 break;
-
     print("yo")
 
 
@@ -189,7 +188,7 @@ resets the viewer to the tictac toe board with a white background
 '''
 def reset_the_viewer():
     # resets img to an allwhite background
-    img = np.full((512,512,3),255,np.uint8)
+    img[0:512,0:512,0:3] = np.full((512,512,3),255,np.uint8)
     # drawing the left vertical bar
     cv.rectangle(img,(left_vert_init_x,left_vert_init_y),(left_vert_final_x,left_vert_final_y),bar_color,-1)
     # drawing the right vertical bar
@@ -250,6 +249,7 @@ if __name__ == '__main__':
         k = cv.waitKey(20) & 0xFF
         if k == 27:
             break
-
+        if k == ord('r'):
+            reset_the_board()
 
     cv.destroyAllWindows()
