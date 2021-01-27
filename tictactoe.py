@@ -1,5 +1,6 @@
 import cv2 as cv
 import numpy as np
+import time
 
 class TicTacToeBoard:
     def __init__(self,againstComputer:bool):
@@ -14,6 +15,8 @@ class TicTacToeBoard:
     def resetBoard(self):
         self.board = np.zeros((3,3), np.uint8)
 
+    def next_turn():
+        self.isPlayer1 = not self.isPlayer1
 
     def get_player_1_marker(self):
         return self.player1marker
@@ -86,7 +89,6 @@ class TicTacToeBoard:
             playerMarker = self.player2marker
 
         self.board[coordinateY][coordinateX] = playerMarker
-        self.isPlayer1 =  not self.isPlayer1
 
     def printBoard(self):
         print(self.board)
@@ -129,10 +131,13 @@ def interact(event,x,y,flags,param):
                 xx = i-1
             if left_pad + (i-1)*tic_tac_dimension +bar_width*(i-1) < y and y <= left_pad + (i* tic_tac_dimension)+ bar_width* (i-1):
                 yy = i-1
-            tic_tac_toe_board.playerPlays(xx,yy)
-            tic_tac_toe_board.printBoard()
-            place_markers()
-    print(" yo")
+            if xx != -1 and yy != -1:
+                tic_tac_toe_board.playerPlays(xx,yy)
+                tic_tac_toe_board.printBoard()
+                place_markers()
+                break;
+
+    print("yo")
 
 
 
@@ -170,9 +175,9 @@ def place_markers():
     for i in range(0,2):
         for j in range(0,2):
             if board[i][j] == player1:
-                replace_section(img,x_img,left_pad + (j*(tic_tac_dimension+bar_width)), top_pad+ j*(tic_tac_dimension*bar_width))
+                replace_section(img,x_img,left_pad + (j*(tic_tac_dimension+bar_width)), top_pad+ i*(tic_tac_dimension*bar_width))
             if board[i][j] == player2:
-                replace_section(img,o_img,left_pad + j*(tic_tac_dimension+bar_width), top_pad + (tic_tac_dimension*bar_width))
+                replace_section(img,o_img,left_pad + (j*(tic_tac_dimension+bar_width)), top_pad+ i*(tic_tac_dimension*bar_width))
 
 '''
 resets the viewer to the tictac toe board with a white background
@@ -240,5 +245,6 @@ if __name__ == '__main__':
         k = cv.waitKey(20) & 0xFF
         if k == 27:
             break
+
 
     cv.destroyAllWindows()
