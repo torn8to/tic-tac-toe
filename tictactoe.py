@@ -178,9 +178,9 @@ def place_markers():
     player2 = tic_tac_toe_board.get_player_2_marker()
     for i in range(0,3):
         for j in range(0,3):
-            if board[i][j] == player2:
-                replace_section(img,x_img,left_pad + (i*(tic_tac_dimension+bar_width)), top_pad+ j*(tic_tac_dimension+bar_width))
             if board[i][j] == player1:
+                replace_section(img,x_img,left_pad + (i*(tic_tac_dimension+bar_width)), top_pad+ j*(tic_tac_dimension+bar_width))
+            if board[i][j] == player2:
                 replace_section(img,o_img,left_pad + (i*(tic_tac_dimension+bar_width)), top_pad+ j*(tic_tac_dimension+bar_width))
 
 '''
